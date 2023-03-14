@@ -3,7 +3,11 @@ const addToCart = async (id) => {
   const result = await data.json();
   const { name, summary, property_type, images,number_of_reviews,price,_id} = result.find((item) => item._id == id);
   const cartItems=getItemsFromStorage()
-  
+  if(cartItems.find(item => item._id == id)
+  ){
+    return
+  }
+
   
   
   cartItems.push({ name, summary, property_type, images,number_of_reviews,price,_id});
@@ -47,8 +51,9 @@ const displayCartItems=()=>{
 displayCartItems()
 
 const deleteItemFromCart=(id)=>{
-    const cartItems=getItemsFromStorage()
-    const filteredItems=cartItems.filter((item)=>item._id==id)
+  console.log(id)
+    const cartItems=getItemsFromStorage();
+    const filteredItems=cartItems.filter((item)=>item._id!=id)
     localStorage.setItem('savedCart', JSON.stringify(filteredItems))
-    displayCartItems()
-}
+    displayCartItems();
+};
